@@ -1,6 +1,7 @@
 package vn.hiep.demobilling
 
 import android.content.Intent
+import android.telephony.SubscriptionManager
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -46,7 +47,7 @@ class SubscribeActivity : BaseActivity(), PurchasesUpdatedListener {
     private fun createList() {
         listProduct.add(
             Product(
-                price = "50.000VND",
+                price = "5000VND",
                 benefit = "AAAAAA",
                 productId = "vip21",
                 name = "VIP 2021"
@@ -54,7 +55,7 @@ class SubscribeActivity : BaseActivity(), PurchasesUpdatedListener {
         )
         listProduct.add(
             Product(
-                price = "50.000VND",
+                price = "5000VND",
                 benefit = "AAAAAA",
                 productId = "hex_premium",
                 name = "Hex Premium"
@@ -160,6 +161,7 @@ class SubscribeActivity : BaseActivity(), PurchasesUpdatedListener {
                         .build()
                     billingClient.launchBillingFlow(this, flowParams)
                     // create purchase Dialog here
+                    Log.d("SubscribeActitivyToken", "$purchaseToken")
 
                 } else {
                     Toast.makeText(
