@@ -2,7 +2,12 @@ package vn.hiep.demobilling.utils
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 
 fun View.visible(animate: Boolean = true) {
     if (animate) {
@@ -48,4 +53,19 @@ private fun View.hide(hidingStrategy: Int, animate: Boolean = true) {
     } else {
         visibility = hidingStrategy
     }
+}
+
+fun Activity.getContentView(): View? {
+    val viewGroup: ViewGroup? = findViewById(android.R.id.content)
+    val childCount = viewGroup?.childCount ?: 0
+    return if (childCount > 0) viewGroup!!.getChildAt(0) else null
+}
+
+inline fun <reified T : Activity> Activity.startActivity(
+    context: Context,
+    bundle: Bundle? = null
+) {
+    val intent = Intent(context, T::class.java)
+    bundle?.let { intent.putExtras(it) }
+    startActivity(intent)
 }

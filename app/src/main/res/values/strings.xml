@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">DemoBilling</string>
+    <string name="app_name">Demo Billing</string>
+    <string name="sku_service_1">Buy product SERVICE 1 successful</string>
+    <string name="sku_service_2">Buy product SERVICE 2 successful</string>
+    <string name="sku_essential">Subscribe ESSENTIAL successful</string>
+    <string name="sku_premium">Subscribe PREMIUM successful</string>
+    <string name="txt_in_app_products">In-app Products</string>
+    <string name="txt_in_app_subscription">In-app Subscription</string>
+
+    <string name="err_product_id_empty">Error ProductId empty</string>
 </resources>
