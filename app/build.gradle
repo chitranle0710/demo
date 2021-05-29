@@ -4,6 +4,13 @@ plugins {
     id 'kotlin-android-extensions'
 }
 
+def localProperties = new Properties()
+try {
+    localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+} catch (Exception e) {
+    logger.warn("No Local Properties File Found!")
+}
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -19,11 +26,18 @@ android {
 
     defaultConfig {
         applicationId "vn.hiep.demobilling"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 6
         versionName "2.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        if (!localProperties['base64EncodedPublicKey']) {
+            logger.warn('base64EncodedPublicKey must be set for signature verification. ' +
+                    'You can add it to local.properties once you have gotten it from Play. ' +
+                    'Example: base64EncodedPublicKey=[key value]')
+        }
+        buildConfigField("String", "BASE64_ENCODED_PUBLIC_KEY", "\"" + localProperties['base64EncodedPublicKey'] + "\"")
     }
 
     buildFeatures {
@@ -46,21 +60,25 @@ android {
 }
 
 dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version_kotlin"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_kotlin"
+    implementation "androidx.core:core-ktx:$version_core_ktx"
+    implementation "androidx.appcompat:appcompat:$version_appcompat"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$version_lifecycle"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$version_lifecycle"
+    implementation "androidx.constraintlayout:constraintlayout:$version_constraintlayout"
+    implementation "androidx.recyclerview:recyclerview:$version_recyclerview"
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.5.0'
-    implementation 'androidx.appcompat:appcompat:1.3.0'
-    implementation 'com.google.android.material:material:1.3.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation "com.android.billingclient:billing-ktx:$version_billing"
 
+    implementation "com.squareup.retrofit2:converter-gson:$version_converter_gson"
+    implementation "com.google.code.gson:gson:$version_gson"
+    implementation "com.google.android.material:material:$version_material"
 
-    implementation 'com.android.billingclient:billing:4.0.0'
+    implementation "com.intuit.sdp:sdp-android:$version_dimens"
+    implementation "com.intuit.ssp:ssp-android:$version_dimens"
 
-    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
-    implementation 'com.google.code.gson:gson:2.6.2'
-
-
+    testImplementation "junit:junit:$version_junit"
+    androidTestImplementation "androidx.test.ext:junit:$version_ext_junit"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$version_espresso"
 }

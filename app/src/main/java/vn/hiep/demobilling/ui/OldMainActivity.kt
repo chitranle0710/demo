@@ -1,32 +1,33 @@
-package vn.hiep.demobilling
+package vn.hiep.demobilling.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.billingclient.api.*
 import com.android.billingclient.api.BillingClient.SkuType.INAPP
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.btnSubscribe
-import vn.hiep.demobilling.adapter.SubscribeAdapter
+import kotlinx.android.synthetic.main.activity_main_old.*
+import vn.hiep.demobilling.R
 import vn.hiep.demobilling.base.BaseActivity
-import vn.hiep.demobilling.model.Product
-
 import vn.hiep.demobilling.utils.Security
 import vn.hiep.demobilling.utils.SharePreference
-import java.lang.RuntimeException
 
 
-class MainActivity : BaseActivity(), PurchasesUpdatedListener {
+class OldMainActivity : BaseActivity(R.layout.activity_main_old), PurchasesUpdatedListener {
     private lateinit var billingClient: BillingClient
 
     private val PRODUCT_ID = "producthex"
 
-    override fun onClickView() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setSupportActionBar(findViewById(R.id.toolbar))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        onClickView()
+        buildBillingClient()
+    }
+
+    private fun onClickView() {
         btnPurchase.setOnClickListener {
             handlePurchaseWhenStarted()
         }
@@ -34,16 +35,6 @@ class MainActivity : BaseActivity(), PurchasesUpdatedListener {
             val intent = Intent(this, SubscribeActivity::class.java)
             startActivity(intent)
         }
-    }
-
-    override fun getLayout(): Int = R.layout.activity_main
-
-    override fun onInitViewModel() {
-    }
-
-    override fun onInitView() {
-        buildBillingClient()
-
     }
 
     private fun buildBillingClient() {
@@ -163,8 +154,7 @@ class MainActivity : BaseActivity(), PurchasesUpdatedListener {
                 applicationContext,
                 "Error " + billingResult.debugMessage,
                 Toast.LENGTH_SHORT
-            ).show();
-
+            ).show()
         }
     }
 
@@ -173,7 +163,7 @@ class MainActivity : BaseActivity(), PurchasesUpdatedListener {
         for (purchase in purchasesList) {
             // check if item is purchase
             if (PRODUCT_ID.equals(purchase.skus) && purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
-                if (!Security.verifyValidSignature(purchase.originalJson, purchase.signature)) {
+                if (!Security.verifyPurchase(purchase.originalJson, purchase.signature)) {
                     // Invalid purchase
                     // show error to user
                     Toast.makeText(

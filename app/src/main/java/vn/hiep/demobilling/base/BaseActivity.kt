@@ -1,29 +1,28 @@
 package vn.hiep.demobilling.base
 
-import android.content.Context
 import android.os.Bundle
-import android.util.AttributeSet
-import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity(
+    @LayoutRes private val res: Int
+) : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(getLayout())
-        onInitView()
-        onInitViewModel()
-        onClickView()
+        setContentView(res)
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
 
-    abstract fun onClickView()
-
-    @LayoutRes
-    abstract fun getLayout(): Int
-
-    abstract fun onInitViewModel()
-
-    abstract fun onInitView()
+    fun <T> LiveData<T>.observe(observer: (T) -> Unit) {
+        observe(this@BaseActivity, Observer {
+            it?.let { observer(it) }
+        })
+    }
 }

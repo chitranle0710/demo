@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_subscribe.view.*
 import vn.hiep.demobilling.R
-import vn.hiep.demobilling.model.Product
+import vn.hiep.demobilling.domain.model.Product
 
 class SubscribeAdapter(
     private val listProduct: MutableList<Product>

@@ -1,19 +1,20 @@
-package vn.hiep.demobilling.model
+package vn.hiep.demobilling.domain.model
 
 data class Product(
-    val orderId: String? = null,
     val productId: String? = null,
+    val orderId: String? = null,
     val packageName: String? = null,
     val purchaseTime: Long? = null,
     val purchaseState: Int? = null,
     val purchaseToken: String? = null,
-    val quantity: Int? = null,
+    var quantity: Int = 0,
     val autoRenewing: Boolean? = null,
     val acknowledged: Boolean? = null,
-    val name: String? = null,
+    var name: String? = null,
     val benefit: String? = null,
-    val description: String? = null,
+    var description: String? = null,
     val status: Int? = null,
-    val price: String? = null
+    var price: String? = null,
+    var isPurchased: Boolean = false
 ) {
 }

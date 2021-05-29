@@ -1,22 +1,22 @@
-package vn.hiep.demobilling
+package vn.hiep.demobilling.ui
 
-import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.billingclient.api.*
 import kotlinx.android.synthetic.main.activity_subscribe.*
+import vn.hiep.demobilling.R
 import vn.hiep.demobilling.adapter.SubscribeAdapter
 import vn.hiep.demobilling.base.BaseActivity
-import vn.hiep.demobilling.model.Product
-import vn.hiep.demobilling.utils.JSON
+import vn.hiep.demobilling.domain.model.Product
 import vn.hiep.demobilling.utils.Security
 import vn.hiep.demobilling.utils.SharePreference
 import java.lang.RuntimeException
 import kotlin.collections.ArrayList
 
-class SubscribeActivity : BaseActivity(), PurchasesUpdatedListener {
+class SubscribeActivity : BaseActivity(R.layout.activity_subscribe), PurchasesUpdatedListener {
     private lateinit var billingClient: BillingClient
     private val PRODUCT_ID_SUBSRIBE = "vip21"
     private var listProduct: MutableList<Product> = ArrayList()
@@ -24,24 +24,26 @@ class SubscribeActivity : BaseActivity(), PurchasesUpdatedListener {
     private lateinit var oldProductID: String
     private var purchaseState: Int? = null
 
-    override fun getLayout(): Int = R.layout.activity_subscribe
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    override fun onInitViewModel() {
+        setSupportActionBar(findViewById(R.id.toolbar))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        onInitView()
+        onClickView()
     }
 
-    override fun onClickView() {
+    private fun onClickView() {
         btnSubscribe.setOnClickListener {
 //            handlePurchaseWhenStarted()
         }
 
         btnSubscribeList.setOnClickListener {
-            val intent = Intent(this, ListSubscribeActivity::class.java)
-            startActivity(intent)
         }
         createList()
 
     }
-
 
     private fun createList() {
         listProduct.add(
@@ -69,7 +71,7 @@ class SubscribeActivity : BaseActivity(), PurchasesUpdatedListener {
         }
     }
 
-    override fun onInitView() {
+    private fun onInitView() {
         buildBillingClient()
         if (SharePreference.getSubscribeValueFromPref(applicationContext)) {
             btnSubscribe.visibility = View.GONE
@@ -220,7 +222,7 @@ class SubscribeActivity : BaseActivity(), PurchasesUpdatedListener {
         for (purchase in purchasesList) {
             // check if item is purchase
             if (PRODUCT_ID_SUBSRIBE.equals(purchase.skus) && purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
-                if (!Security.verifyValidSignature(purchase.originalJson, purchase.signature)) {
+                if (!Security.verifyPurchase(purchase.originalJson, purchase.signature)) {
                     // Invalid purchase
                     // show error to user
                     Log.d("SubscribeActivity", "Error : Invalid Subscribe")
