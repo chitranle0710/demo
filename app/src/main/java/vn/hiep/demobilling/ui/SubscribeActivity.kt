@@ -48,7 +48,7 @@ class SubscribeActivity : BaseActivity(R.layout.activity_subscribe), PurchasesUp
     private fun createList() {
         listProduct.add(
             Product(
-                price = "50.000VND",
+                price = "5000VND",
                 benefit = "AAAAAA",
                 productId = "vip21",
                 name = "VIP 2021"
@@ -56,7 +56,7 @@ class SubscribeActivity : BaseActivity(R.layout.activity_subscribe), PurchasesUp
         )
         listProduct.add(
             Product(
-                price = "50.000VND",
+                price = "5000VND",
                 benefit = "AAAAAA",
                 productId = "hex_premium",
                 name = "Hex Premium"
@@ -162,6 +162,7 @@ class SubscribeActivity : BaseActivity(R.layout.activity_subscribe), PurchasesUp
                         .build()
                     billingClient.launchBillingFlow(this, flowParams)
                     // create purchase Dialog here
+                    Log.d("SubscribeActitivyToken", "$purchaseToken")
 
                 } else {
                     Toast.makeText(
