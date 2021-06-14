@@ -142,7 +142,7 @@ class MainBillingActivity : BaseActivity(R.layout.activity_main_billing) {
         }
         if (updateProduct != null) {
             updateProduct.isPurchased = isPurchased
-            binding.recyclerView.adapter?.notifyDataSetChanged()
+            binding.recyclerView.adapter!!.notifyDataSetChanged()
         }
     }
 

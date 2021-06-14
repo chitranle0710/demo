@@ -170,7 +170,6 @@ class BillingRepository(
 
     init {
         postMessagesFromBillingFlow()
-
         // Since both are tied to application lifecycle, we can launch this scope to collect
         // consumed purchases from the billing data source while the app process is alive.
         defaultScope.launch {

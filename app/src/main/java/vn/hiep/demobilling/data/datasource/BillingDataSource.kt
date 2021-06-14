@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2021 Google Inc. All rights reserved.
  *
@@ -280,7 +279,10 @@ class BillingDataSource private constructor(
      * Store the SkuDetails and post them in the [.skuDetailsMap]. This allows other
      * parts of the app to use the [SkuDetails] to show SKU information and make purchases.
      */
-    private fun onSkuDetailsResponse(billingResult: BillingResult, skuDetailsList: List<SkuDetails>?) {
+    private fun onSkuDetailsResponse(
+        billingResult: BillingResult,
+        skuDetailsList: List<SkuDetails>?
+    ) {
         val responseCode = billingResult.responseCode
         val debugMessage = billingResult.debugMessage
         when (responseCode) {
@@ -527,7 +529,7 @@ class BillingDataSource private constructor(
         val updatedSkus = HashSet<String>()
         if (null != purchases) {
             for (purchase in purchases) {
-                for (sku  in purchase.skus) {
+                for (sku in purchase.skus) {
                     val skuStateFlow = skuStateMap[sku]
                     if (null == skuStateFlow) {
                         Log.e(
@@ -560,8 +562,10 @@ class BillingDataSource private constructor(
                                 isConsumable = true
                             } else {
                                 if (isConsumable) {
-                                    Log.e(TAG, "Purchase cannot contain a mixture of consumable" +
-                                            "and non-consumable items: " + purchase.skus.toString())
+                                    Log.e(
+                                        TAG, "Purchase cannot contain a mixture of consumable" +
+                                                "and non-consumable items: " + purchase.skus.toString()
+                                    )
                                     isConsumable = false
                                     break
                                 }
@@ -578,7 +582,10 @@ class BillingDataSource private constructor(
                                     .build()
                             )
                             if (billingResult.responseCode != BillingClient.BillingResponseCode.OK) {
-                                Log.e(TAG, "Error acknowledging purchase: ${purchase.skus.toString()}")
+                                Log.e(
+                                    TAG,
+                                    "Error acknowledging purchase: ${purchase.skus.toString()}"
+                                )
                             } else {
                                 // purchase acknowledged
                                 for (sku in purchase.skus) {
@@ -737,7 +744,10 @@ class BillingDataSource private constructor(
                         "are using must be signed with release keys."
             )
             else -> {
-                Log.d(TAG, "BillingResult [" + billingResult.responseCode + "]: " + billingResult.debugMessage)
+                Log.d(
+                    TAG,
+                    "BillingResult [" + billingResult.responseCode + "]: " + billingResult.debugMessage
+                )
                 defaultScope.launch {
                     errorFlow.emit("BillingResult [" + billingResult.responseCode + "]: " + billingResult.debugMessage)
                 }

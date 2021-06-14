@@ -63,7 +63,8 @@ class BillingAdapter(
             onClick: ((product: Product) -> Unit),
             product: Product
         ) {
-            var text = "${product.name}\n\n${product.description ?: "..."}\n${product.price ?: "..."}"
+            var text =
+                "${product.name}\n\n${product.description ?: "..."}\n${product.price ?: "..."}"
             if (product.quantity > 0) {
                 text += "\nQuantity: ${product.quantity}"
             }
